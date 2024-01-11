@@ -34,3 +34,8 @@ jobs:
         pyinstaller main.py
         mv dist/main ../
         cd ..
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: main
+        path: builds/
