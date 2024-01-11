@@ -32,31 +32,28 @@ cat 9.txt
 
 # Examples
 
-! Input
+Input:
 
 `
 python3 main.py 3
 `
 
-! Output
+Output:
 
-`
 8|1|6|
 ------
 3|5|7|
 ------
 4|9|2|
-`
 
-! Input
+Input:
 
 `
 python3 main.py 5
 `
 
-! Output
+Output:
 
-`
 17|24| 1| 8|15|
 ---------------
 23| 5| 7|14|16|
@@ -66,4 +63,3 @@ python3 main.py 5
 10|12|19|21| 3|
 ---------------
 11|18|25| 2| 9|
-`
