@@ -1,10 +1,29 @@
 import os
 import math
 import pdb
+import sys
 
-def genEmptySquare(size, numbers, file):
+def comKeys(key1, key2):
+    return f"{key1}|{key2}"
+
+def genSpaces(maxLen, lenNum):
+    spaces = []
+    for x in range(maxLen - lenNum):
+        spaces.append(" ")
+
+    return "".join(spaces)
+
+def genSquare(size, numbers, file):
     if len(numbers) != size * size:
-        quit("list is the wrong size")
+        quit("numbersList is the wrong size")
+    spaces = []
+    dashes = []
+    spaceNeeded = len(str(size * size))
+    for x in range(spaceNeeded):
+        spaces.append(" ")
+        dashes.append("-")
+    spaces = "".join(spaces)
+    dashes = "".join(dashes)
     if not os.path.exists(file):
         with open(file, 'w') as F:
             F.close()
@@ -18,95 +37,103 @@ def genEmptySquare(size, numbers, file):
                 F.write("\n")
                 for x in range(size):
                     if z == 0:
-                        print(f"x: {x}")
-                        print(f"y: {y}")
-                        print(f"both: {x + (y * size)}")
-                        F.write(f"{numbers[x, y]}|")
+                        # print(f"x: {x}")
+                        # print(f"y: {y}")
+                        # print(f"both: {x + (y * size)}")
+
+                        F.write(f"{genSpaces(spaceNeeded, len(str(numbers[comKeys(x, y)])))}{numbers[comKeys(x, y)]}|")
                     if z == 1 and y != (size - 1):
-                        F.write("--")
+                        F.write(f"{dashes}-")
 
 
 def genNumbers(size):
-    list = {}
+    numbersList = {}
     x = 0
     y = 0
     num = 1
     
     # start
-    x = int(((size / size) + 1))
-    list[x, y] = num
+    x = int(((size / 2) + 1) - 1)
+    numbersList[comKeys(x, y)] = num
 
     x += 1
-    y = size
+    y = size - 1
     num += 1
-    print(f"num: {num}")
-    list[x, y] = num
+    # print(f"num: {num}")
+    numbersList[comKeys(x, y)] = num
 
     maxIterations = size * size
     its = 0
 
-    while len(list) < (size * size - 1) and its < maxIterations:
+    while len(numbersList) < (size * size - 1) and its < maxIterations:
         its += 1
 
         output = 0
         upRight = True
         # pdb.set_trace()
         while upRight:
-            upRight = all(k in list for k in [(x + 1), (y - 1)])
-            if x + 1 > size or y - 1 > size:
-                upRight = False
-                output = 2 # false out of square
-            if upRight == True:
+            # pdb.set_trace()
+            upRight = not comKeys(x + 1, y - 1) in numbersList
+            if x + 1 > size - 1 or y - 1 > size - 1 or y - 1 < 0:
+                if x + 1 > size - 1 and y - 1 < 0:
+                    upRight = False
+                    output = 2 # also false out of square but this time move down
+                    y += 1
+                    num += 1
+                    # print(f"num: {num}")
+                    numbersList[comKeys(x, y)] = num
+                if y - 1 < 0:
+                    upRight = False
+                    output = 2 # also false out of square but this time move down
+                    x += 1
+                    y = size - 1
+                    num += 1
+                    # print(f"num: {num}")
+                    numbersList[comKeys(x, y)] = num
+                elif x + 1 > size - 1:
+                    upRight = False
+                    output = 2 # false out of square
+                    x = 0
+                    y -= 1
+                    num += 1
+                    # print(f"num: {num}")
+                    numbersList[comKeys(x, y)] = num
+            if upRight and output == 0:
+                # can move up and right
                 x += 1
                 y -= 1
                 num += 1
-                print(f"num: {num}")
-                list[x, y] = num
+                # print(f"num: {num}")
+                numbersList[comKeys(x, y)] = num
 
-        if output == 2:
-            x = 0
-            y -= 1
-            num += 1
-            print(f"num: {num}")
-            list[x, y] = num
-        elif output == 0:
+        if upRight == False and output == 0:
+            # up right is taken by a number
             y += 1
             num += 1
-            print(f"num: {num}")
-            list[x, y] = num
+            # print(f"num: {num}")
+            numbersList[comKeys(x, y)] = num
 
         if num == -1 + (size * size):
-            y = size
-            x = int(((size / size) + 1))
+            y = size - 1
+            x = int(((size / 2) + 1) - 1)
             num += 1
-            print(f"num: {num}")
-            list[x, y] = num
+            # print(f"num: {num}")
+            numbersList[comKeys(x, y)] = num
 
-    print(f"list {list}")
-    return list
-
-
-    # fill to the square
-    with open(file, 'r') as F:
-        content = F.read().splitlines()
-        for x in range(len(content)):
-            rows = content[x]
-            if not "|" in rows:
-                continue
-
-            # 2 chars per col
-            for y in range(len(rows)):
-                char = rows[y]
-                if char == " ":
-                    content[x][y] = str(list[x * (y + 1)])
-                print(f"char: {char}")
+    # print(f"numbersList {numbersList}")
+    return numbersList
 
 
 def main():
-    print("welcome to main")
-    numbers = genNumbers(3)
-    genEmptySquare(3, numbers, "9.txt")
+    size = sys.argv[1]
+    size = int(size)
+    filename = f"squares/{size * size}.txt"
+    numbers = genNumbers(size)
+    genSquare(size, numbers, filename)
+    print(f"generated magic square size: {size * size}")
 
 
 if __name__ == "__main__":
+    if not os.path.exists("squares"):
+        os.mkdir("squares")
     main()
