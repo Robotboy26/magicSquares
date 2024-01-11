@@ -34,10 +34,8 @@ jobs:
         pyinstaller main.py
         mv dist/main ../
         cd ..
-        mkdir build
-        mv main build/
 
     - uses: actions/upload-artifact@v4
       with:
         name: main
-        path: builds/
+        path: magicSquares/main
