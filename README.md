@@ -52,12 +52,10 @@ mv dist/main ../
 
 4. You can now run the executable from the project root
 
-`
+```
 cd ..
-`
-`
 ./main 3
-`
+```
 
 # Examples
 
