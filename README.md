@@ -54,6 +54,8 @@ mv dist/main ../
 
 `
 cd ..
+`
+`
 ./main 3
 `
 
