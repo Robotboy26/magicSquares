@@ -30,6 +30,33 @@ cd squares
 cat 9.txt
 `
 
+# compile into one executable file
+
+1. Download pyinstaller.
+
+`
+pip install pyinstaller
+`
+
+2. In the src folder create the file.
+
+`
+pyinstaller main.py
+`
+
+3. Move the executable file out of its dir and into the project root
+
+`
+mv dist/main ../
+`
+
+4. You can now run the executable from the project root
+
+`
+cd ..
+./main 3
+`
+
 # Examples
 
 Input:
