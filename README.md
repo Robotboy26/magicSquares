@@ -4,6 +4,8 @@
 
 # How to use
 
+Note: you can also download an executable. See compile
+
 
 1. First download the code (in the terminal of your choice).
 
@@ -30,7 +32,9 @@ cd squares
 cat 9.txt
 `
 
-# compile into one executable file
+# Compile
+
+Note: You can get the latest compiled executable file from the actions tab (click the top workflow)
 
 1. Download pyinstaller.
 
