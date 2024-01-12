@@ -125,7 +125,10 @@ def genNumbers(size):
 
 
 def main():
-    size = sys.argv[1]
+    if len(sys.argv) > 1:
+        size = sys.argv[1]
+    else:
+        quit("Please input a side length")
     size = int(size)
     filename = f"squares/{size * size}.txt"
     numbers = genNumbers(size)
